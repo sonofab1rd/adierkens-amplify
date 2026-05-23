@@ -1,0 +1,30 @@
+# Nuxt dev/build outputs
+.output
+.amplify-hosting
+.data
+.nuxt
+.nitro
+.cache
+dist
+docs
+
+# Node dependencies
+node_modules
+
+# Logs
+logs
+*.log
+
+# Misc
+.DS_Store
+.fleet
+.idea
+.worktrees
+worktrees
+
+# Local env files
+.env
+.env.*
+!.env.example
+amplify_outputs.json
+copilot-instructions.md
