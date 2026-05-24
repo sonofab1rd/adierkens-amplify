@@ -41,8 +41,8 @@ type GraphqlResponse<TData> = {
   errors?: Array<{ message: string }>
 }
 
-async function requestAmplifyGraphql<TData>(event: H3Event, query: string) {
-  const config = getAmplifyPublicReadConfig(useRuntimeConfig(event))
+async function requestAmplifyGraphql<TData>(query: string) {
+  const config = getAmplifyPublicReadConfig()
   const response = await $fetch<GraphqlResponse<TData>>(config.endpoint, {
     method: 'POST',
     headers: {
@@ -62,7 +62,7 @@ async function requestAmplifyGraphql<TData>(event: H3Event, query: string) {
   }
 }
 
-export async function fetchFeatureContent(event: H3Event): Promise<FeatureApiResponse> {
+export async function fetchFeatureContent(_event: H3Event): Promise<FeatureApiResponse> {
   try {
     const { config, response } = await requestAmplifyGraphql<{
       listFeatures?: {
@@ -75,7 +75,7 @@ export async function fetchFeatureContent(event: H3Event): Promise<FeatureApiRes
           imageAlt?: string | null
         }>
       }
-    }>(event, listFeaturesQuery)
+    }>(listFeaturesQuery)
 
     const feature = extractFeatureRecord(response)
 
@@ -91,7 +91,7 @@ export async function fetchFeatureContent(event: H3Event): Promise<FeatureApiRes
   }
 }
 
-export async function fetchArticleContent(event: H3Event): Promise<ArticlesApiResponse> {
+export async function fetchArticleContent(_event: H3Event): Promise<ArticlesApiResponse> {
   try {
     const { config, response } = await requestAmplifyGraphql<{
       listArticles?: {
@@ -104,7 +104,7 @@ export async function fetchArticleContent(event: H3Event): Promise<ArticlesApiRe
           coverAlt?: string | null
         }>
       }
-    }>(event, listArticlesQuery)
+    }>(listArticlesQuery)
 
     return {
       configured: true,

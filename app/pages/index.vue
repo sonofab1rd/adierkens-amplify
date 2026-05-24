@@ -2,7 +2,6 @@
 import type { FeatureApiResponse } from '~/shared/content'
 
 const { data } = await useFetch<FeatureApiResponse>('/api/content/feature')
-
 const feature = computed(() => data.value?.feature ?? null)
 const loadError = computed(() => data.value?.error ?? 'Amplify homepage content is not configured yet.')
 const usingFallbackContent = computed(() => Boolean(data.value && !data.value.configured))

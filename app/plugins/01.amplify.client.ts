@@ -1,4 +1,5 @@
 import { Amplify } from 'aws-amplify'
+import { getAmplifyClientConfig } from '../../shared/amplify-outputs'
 
 export default defineNuxtPlugin({
   name: 'amplify',
@@ -8,51 +9,6 @@ export default defineNuxtPlugin({
       return
     }
 
-    const config = useRuntimeConfig()
-    const {
-      amplifyAppsyncEndpoint,
-      amplifyAwsRegion,
-      amplifyStorageBucket,
-      cognitoClientId,
-      cognitoIdentityPoolId,
-      cognitoUserPoolId,
-    } = config.public
-
-    if (
-      !amplifyAppsyncEndpoint ||
-      !amplifyAwsRegion ||
-      !amplifyStorageBucket ||
-      !cognitoUserPoolId ||
-      !cognitoClientId ||
-      !cognitoIdentityPoolId
-    ) {
-      return
-    }
-
-    Amplify.configure({
-      Auth: {
-        Cognito: {
-          userPoolId: cognitoUserPoolId,
-          userPoolClientId: cognitoClientId,
-          identityPoolId: cognitoIdentityPoolId,
-          loginWith: {
-            email: true,
-          },
-        },
-      },
-      API: {
-        GraphQL: {
-          endpoint: amplifyAppsyncEndpoint,
-          region: amplifyAwsRegion,
-          defaultAuthMode: 'userPool',
-        },
-      },
-      Storage: {
-        S3: {
-          bucket: amplifyStorageBucket,
-          region: amplifyAwsRegion,
-        },
-      },
-    })
+    Amplify.configure(getAmplifyClientConfig())
   },
 })

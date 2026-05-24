@@ -23,7 +23,6 @@ type EditableArticle = {
   coverAlt: string
 }
 
-const runtimeConfig = useRuntimeConfig()
 const client = generateClient<Schema>()
 
 const email = ref('')
@@ -47,16 +46,7 @@ const feature = reactive<EditableFeature>({
 
 const articles = ref<EditableArticle[]>([])
 
-const amplifyConfigured = computed(() => {
-  return Boolean(
-    runtimeConfig.public.amplifyAppsyncEndpoint &&
-    runtimeConfig.public.amplifyAwsRegion &&
-    runtimeConfig.public.amplifyStorageBucket &&
-    runtimeConfig.public.cognitoUserPoolId &&
-    runtimeConfig.public.cognitoClientId &&
-    runtimeConfig.public.cognitoIdentityPoolId,
-  )
-})
+const amplifyConfigured = true
 
 const sortArticles = () => {
   articles.value.sort((left, right) => {
@@ -288,7 +278,7 @@ const setArticleImage = (slug: string, event: Event) => {
 }
 
 onMounted(async () => {
-  if (amplifyConfigured.value) {
+  if (amplifyConfigured) {
     await refreshSession()
   }
 })
@@ -300,8 +290,8 @@ onMounted(async () => {
       v-if="!amplifyConfigured"
       color="warning"
       variant="soft"
-      title="Amplify admin config is incomplete"
-      description="Set the AppSync, Cognito, and storage runtime variables before using the internal editor."
+      title="Amplify outputs are unavailable"
+      description="Generate the root amplify_outputs.json file before using the internal editor."
     />
 
     <template v-else-if="!isSignedIn">
