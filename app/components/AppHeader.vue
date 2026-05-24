@@ -27,7 +27,7 @@ const items = computed<NavigationMenuItem[]>(() => [
 <UHeader >
 <template #left>
   <NuxtLink to="/" class="text-lg font-bold">
-  Audrey Dierkens
+  Fine and Fiber
   </NuxtLink>
 </template>
   <template #right>
