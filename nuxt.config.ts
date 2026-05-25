@@ -8,5 +8,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui'
   ],
+  image: {
+    domains: ['://amazonaws.com'],
+    awsAmplify:{
+      formats: ['image/jpeg', 'image/png', 'image/webp', 'image/avif'],
+    },
+  },
   css: ['./assets/css/main.css'],
 })

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { FeatureApiResponse } from '~/shared/content'
+import type { FeatureApiResponse } from '#shared/content'
 
 const { data } = await useFetch<FeatureApiResponse>('/api/content/feature')
 const feature = computed(() => data.value?.feature ?? null)
@@ -25,10 +25,10 @@ const usingFallbackContent = computed(() => Boolean(data.value && !data.value.co
         :headline="feature.headline"
     >
       <template #top>
-        <div v-if="feature.image.url" class="flex justify-center">
+        <div class="flex justify-center">
       <NuxtImg
           :src="feature.image.url"
-          :alt="feature.image.alt"
+          :alt="feature.image.url"
           class="rounded-lg shadow-2xl ring ring-default mt-8"
       />
         </div>
