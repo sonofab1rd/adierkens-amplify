@@ -2,13 +2,28 @@ import assert from 'node:assert/strict'
 import test from 'node:test'
 
 import {
+  buildStorageHostname,
   buildStorageObjectUrl,
   normalizeArticleRecord,
   normalizeFeatureRecord,
 } from '../../shared/content'
 
+test('buildStorageHostname returns the bucket-specific S3 hostname', () => {
+  assert.equal(
+    buildStorageHostname('site-content', 'us-east-1'),
+    'site-content.s3.us-east-1.amazonaws.com',
+  )
+})
+
 test('buildStorageObjectUrl returns null when no object path is available', () => {
   assert.equal(buildStorageObjectUrl('site-content', 'us-east-1', null), null)
+})
+
+test('buildStorageObjectUrl returns the Nitro image route for an object path', () => {
+  assert.equal(
+    buildStorageObjectUrl('site-content', 'us-east-1', 'public/content/feature/hero.jpg'),
+    '/content-image?path=public%2Fcontent%2Ffeature%2Fhero.jpg',
+  )
 })
 
 test('normalizeFeatureRecord converts a feature record into homepage content', () => {
@@ -35,7 +50,7 @@ test('normalizeFeatureRecord converts a feature record into homepage content', (
     image: {
       path: 'public/content/feature/hero.jpg',
       alt: 'Audrey portrait',
-      url: 'https://site-content.s3.us-east-1.amazonaws.com/public/content/feature/hero.jpg',
+      url: '/content-image?path=public%2Fcontent%2Ffeature%2Fhero.jpg',
     },
   })
 })
@@ -64,7 +79,7 @@ test('normalizeArticleRecord converts an article record into gallery content', (
     cover: {
       path: 'public/content/articles/spring-show.jpg',
       alt: 'Spring collection cover',
-      url: 'https://site-content.s3.us-east-1.amazonaws.com/public/content/articles/spring-show.jpg',
+      url: '/content-image?path=public%2Fcontent%2Farticles%2Fspring-show.jpg',
     },
   })
 })

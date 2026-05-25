@@ -55,15 +55,23 @@ export type ArticlesApiResponse = {
   error?: string
 }
 
-export function buildStorageObjectUrl(storageBucket: string, awsRegion: string, objectPath: string | null | undefined) {
+export function buildStorageHostname(storageBucket: string, awsRegion: string) {
+  return `${storageBucket}.s3.${awsRegion}.amazonaws.com`
+}
+
+export function buildStorageObjectUrl(_storageBucket: string, _awsRegion: string, objectPath: string | null | undefined) {
   if (!objectPath) {
     return null
   }
 
-  return `https://${storageBucket}.s3.${awsRegion}.amazonaws.com/${objectPath}`
+  return `/content-image?path=${encodeURIComponent(objectPath)}`
 }
 
-export function normalizeFeatureRecord(feature: FeatureRecord, storage: StorageConfig): FeatureContent {
+export function normalizeFeatureRecord(
+  feature: FeatureRecord,
+  storage: StorageConfig,
+  imageUrl = buildStorageObjectUrl(storage.storageBucket, storage.awsRegion, feature.imagePath),
+): FeatureContent {
   return {
     slug: feature.slug,
     headline: feature.headline,
@@ -72,12 +80,16 @@ export function normalizeFeatureRecord(feature: FeatureRecord, storage: StorageC
     image: {
       path: feature.imagePath ?? null,
       alt: feature.imageAlt ?? feature.title,
-      url: buildStorageObjectUrl(storage.storageBucket, storage.awsRegion, feature.imagePath),
+      url: imageUrl,
     },
   }
 }
 
-export function normalizeArticleRecord(article: ArticleRecord, storage: StorageConfig): ArticleContent {
+export function normalizeArticleRecord(
+  article: ArticleRecord,
+  storage: StorageConfig,
+  coverUrl = buildStorageObjectUrl(storage.storageBucket, storage.awsRegion, article.coverPath),
+): ArticleContent {
   return {
     slug: article.slug,
     title: article.title,
@@ -86,7 +98,7 @@ export function normalizeArticleRecord(article: ArticleRecord, storage: StorageC
     cover: {
       path: article.coverPath ?? null,
       alt: article.coverAlt ?? article.title,
-      url: buildStorageObjectUrl(storage.storageBucket, storage.awsRegion, article.coverPath),
+      url: coverUrl,
     },
   }
 }

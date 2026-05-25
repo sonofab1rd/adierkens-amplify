@@ -42,6 +42,7 @@ const formatDate = (date: string) => {
         >
           <div v-if="article.cover.url" class="relative h-56 w-full overflow-hidden">
             <NuxtImg
+                provider="none"
                 :src="article.cover.url"
                 :alt="article.cover.alt"
                 class="w-full h-full object-cover"

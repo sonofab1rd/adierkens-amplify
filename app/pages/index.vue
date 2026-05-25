@@ -27,8 +27,9 @@ const usingFallbackContent = computed(() => Boolean(data.value && !data.value.co
       <template #top>
         <div class="flex justify-center">
       <NuxtImg
+          provider="none"
           :src="feature.image.url"
-          :alt="feature.image.url"
+          :alt="feature.image.alt"
           class="rounded-lg shadow-2xl ring ring-default mt-8"
       />
         </div>
